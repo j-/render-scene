@@ -28,15 +28,31 @@ export interface Frame {
   readonly timeRemainingMs: number;
 }
 
-export function buildFrame(options: Pick<Frame, 'timeElapsedMs'>, info: Info): Frame {
-  const { totalTimeMs, totalFrames } = info;
-  let { timeElapsedMs } = options;
+export function buildFrame(options: Pick<Frame, 'timeElapsedMs'>, info: Info): Frame;
+export function buildFrame(options: Pick<Frame, 'framesElapsed'>, info: Info): Frame;
+export function buildFrame(options: Partial<Frame>, info: Info): Frame {
+  const { totalTimeMs, totalFrames, frameIntervalMs } = info;
+  let { timeElapsedMs, framesElapsed } = options;
 
   if (timeElapsedMs !== undefined) {
     timeElapsedMs = Math.round(timeElapsedMs % totalTimeMs);
     const progress = timeElapsedMs / totalTimeMs;
     const framesElapsed = Math.round(progress * totalFrames);
     const framesRemaining = totalFrames - framesElapsed;
+    const timeRemainingMs = totalTimeMs - timeElapsedMs;
+    return {
+      progress,
+      framesElapsed,
+      framesRemaining,
+      timeElapsedMs,
+      timeRemainingMs,
+    };
+  }
+
+  if (framesElapsed !== undefined) {
+    const progress = framesElapsed / totalFrames;
+    const framesRemaining = totalFrames - framesElapsed;
+    const timeElapsedMs = framesElapsed * frameIntervalMs;
     const timeRemainingMs = totalTimeMs - timeElapsedMs;
     return {
       progress,
