@@ -2,6 +2,7 @@ import * as React from 'react';
 import MainScene from './scenes/colors';
 import { buildInfo } from './info';
 import { buildFrame } from './frame';
+import { utils } from './utils';
 
 const CANVAS_WIDTH = 500;
 const CANVAS_HEIGHT = 500;
@@ -26,7 +27,7 @@ const App: React.FC = () => {
 
     canvas.width = CANVAS_WIDTH;
     canvas.height = CANVAS_HEIGHT;
-    const scene = new MainScene(canvas, ctx, CANVAS_WIDTH, CANVAS_HEIGHT);
+    const scene = new MainScene(canvas, ctx, CANVAS_WIDTH, CANVAS_HEIGHT, utils);
 
     const loop = (time: number) => {
       const frame = buildFrame({

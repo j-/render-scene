@@ -1,5 +1,6 @@
 import { Frame } from './frame';
 import { Info } from './info';
+import { Utils } from './utils';
 
 export abstract class Scene {
   constructor (
@@ -19,6 +20,10 @@ export abstract class Scene {
      * Canvas height in pixels.
      */
     protected readonly height: number,
+    /**
+     * Utilities which may differ between execution environments.
+     */
+    protected readonly utils: Utils,
   ) {}
   /**
    * Draw a single frame of this scene. Is given information on the current
@@ -33,3 +38,5 @@ export abstract class Scene {
     this.ctx.clearRect(0, 0, this.width, this.height);
   }
 }
+
+export type SceneConstructor = new (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, width: number, height: number, utils: Utils) => Scene;

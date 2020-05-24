@@ -1,0 +1,8 @@
+#!sh
+
+if [ $# -ne 1 ]; then
+  echo -e "Expected scene name as first argument"
+  exit 1
+fi
+
+npm run render -- $1

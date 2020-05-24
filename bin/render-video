@@ -1,0 +1,17 @@
+#!sh
+
+if [ $# -ne 1 ]; then
+  echo -e "Expected scene name as first argument"
+  exit 1
+fi
+
+ffmpeg \
+  -i ./out/$1/frame-%03d.png \
+  -c:a aac \
+  -ar 44100 \
+  -c:v libx264 \
+  -pix_fmt yuv420p \
+  -preset faster \
+  -tune stillimage \
+  -shortest \
+  ./out/$1/$1.mp4

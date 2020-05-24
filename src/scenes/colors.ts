@@ -1,11 +1,11 @@
 import { Scene } from '../scene';
 import { Frame } from '../frame';
 import { Info } from '../info';
-import { createCanvas } from '../canvas';
 import { getContext } from '../context';
 import { hslToRgb } from '../color';
 import { createImageData } from '../image-data';
 import { multiply } from '../curve';
+import { Utils } from '../utils';
 
 const MAX_DISTANCE = 5000;
 const QUARTER_TURN = Math.PI / 2;
@@ -39,12 +39,12 @@ const curve = multiply((x) => {
 export default class ColorsScene extends Scene {
   private readonly imageDataWidth = this.width / 2;
   private readonly imageDataHeight = this.height / 2;
-  private readonly bufferCanvas = createCanvas(this.imageDataWidth, this.imageDataHeight);
+  private readonly bufferCanvas = this.utils.createCanvas(this.imageDataWidth, this.imageDataHeight);
   private readonly bufferCtx = getContext(this.bufferCanvas);
   private readonly imageData = createImageData(this.bufferCtx);
 
-  constructor (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, width: number, height: number) {
-    super(canvas, ctx, width, height);
+  constructor (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, width: number, height: number, utils: Utils) {
+    super(canvas, ctx, width, height, utils);
     this.ctx.translate(this.imageDataWidth, this.imageDataHeight);
   }
 
