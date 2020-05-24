@@ -15,7 +15,7 @@ const WIDTH = 500;
 const HEIGHT = 500;
 
 const TOTAL_TIME_MS = 30000;
-const FRAMES_PER_SECOND = 30;
+const FRAMES_PER_SECOND = 25;
 
 const info = buildInfo({
   totalTimeMs: TOTAL_TIME_MS,
