@@ -7,7 +7,6 @@ fi
 
 ffmpeg \
   -i ./out/$1/frame-%03d.png \
-  -c:a aac \
   -c:v libx264 \
   -pix_fmt yuv420p \
   -preset faster \
