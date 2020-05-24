@@ -1,0 +1,33 @@
+{
+  "name": "render-scene",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "main": "src/index.tsx",
+  "dependencies": {
+    "@types/react": "16.9.34",
+    "@types/react-dom": "16.9.5",
+    "@types/react-redux": "7.1.7",
+    "react": "16.9.0",
+    "react-dom": "16.9.0",
+    "react-redux": "7.2.0",
+    "react-scripts": "3.4.1",
+    "redux": "4.0.5",
+    "redux-devtools-extension": "2.13.8",
+    "redux-thunk": "2.3.0",
+    "typescript": "3.8.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
