@@ -39,7 +39,7 @@ const App: React.FC = () => {
 
     return () => cancelAnimationFrame(clock);
   }, []);
-  
+
   return (
     <div className="App">
       <h1>Scene</h1>

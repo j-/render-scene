@@ -64,7 +64,7 @@ export default class ColorsScene extends Scene {
     }
     bufferCtx.putImageData(imageData, 0, 0);
   }
-  
+
   draw (frame: Frame, info: Info) {
     this.drawToBuffer(frame, info);
     const { ctx, bufferCanvas } = this;

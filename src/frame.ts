@@ -31,7 +31,7 @@ export interface Frame {
 export function buildFrame(options: Pick<Frame, 'timeElapsedMs'>, info: Info): Frame {
   const { totalTimeMs, totalFrames } = info;
   let { timeElapsedMs } = options;
-  
+
   if (timeElapsedMs !== undefined) {
     timeElapsedMs = Math.round(timeElapsedMs % totalTimeMs);
     const progress = timeElapsedMs / totalTimeMs;
