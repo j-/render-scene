@@ -9,7 +9,7 @@ ffmpeg \
   -i ./out/$1/frame-%03d.png \
   -c:v libx264 \
   -pix_fmt yuv420p \
-  -preset faster \
+  -preset veryslow \
   -tune stillimage \
   -shortest \
   ./out/$1/$1.mp4
