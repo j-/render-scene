@@ -11,6 +11,5 @@ ffmpeg \
   -pix_fmt yuv420p \
   -preset veryslow \
   -tune stillimage \
-  -crf 0 \
   -shortest \
   ./out/$1/$1.mp4
