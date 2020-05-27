@@ -5,8 +5,9 @@ import { hslToRgb } from '../color';
 import { createImageData } from '../image-data';
 import { Utils } from '../utils';
 
-const SATURATION = 0.8;
-const LIGHTNESS = 0.8;
+const SATURATION = 1;
+const LIGHTNESS = 0.7;
+const TAU = Math.PI * 2;
 
 export default class ColorsScene extends Scene {
   private readonly imageData = createImageData(this.ctx);
@@ -17,20 +18,21 @@ export default class ColorsScene extends Scene {
   }
 
   draw (frame: Frame, _info: Info) {
-    for (let x = 0; x < this.width; x++) {
-      for (let y = 0; y < this.height; y++) {
-        let xx = x / 2.5 + 10000;
-        let yy = y / 2.5 + 10000;
-        const distance = Math.sqrt(xx ** 3 + yy ** 3) / this.width / 100000;
-        const hue = (100000 + frame.progress / 5) % distance / distance;
+    const { width, height, imageData, ctx } = this;
+    const { progress } = frame;
+    for (let x = 0; x < width; x++) {
+      for (let y = 0; y < height; y++) {
+        let xx = ((x / width + 0.5) + Math.sin(progress * TAU) * 0.25) % 1 * 0x100;
+        let yy = ((y / height + 0.5) + Math.cos(progress * TAU) * 0.25) % 1 * 0x100;
+        const hue = (Math.max(0, Math.min(1, (xx ^ yy) / 0x100)) + (progress)) % 1;
         const [r, g, b] = hslToRgb(hue, SATURATION, LIGHTNESS);
-        const index = 4 * (y * this.height + x);
-        this.imageData.data[index + 0] = r;
-        this.imageData.data[index + 1] = g;
-        this.imageData.data[index + 2] = b;
-        this.imageData.data[index + 3] = 0xff;
+        const index = 4 * (y * height + x);
+        imageData.data[index + 0] = r;
+        imageData.data[index + 1] = g;
+        imageData.data[index + 2] = b;
+        imageData.data[index + 3] = 0xff;
       }
     }
-    this.ctx.putImageData(this.imageData, 0, 0);
+    ctx.putImageData(imageData, 0, 0);
   }
 }

@@ -11,10 +11,10 @@ const scenePath = path.resolve(__dirname, '..', 'src', 'scenes', sceneName + '.t
 
 const outDir = path.resolve(__dirname, '..', 'out', sceneName);
 
-const WIDTH = 500;
-const HEIGHT = 500;
+const WIDTH = 1500;
+const HEIGHT = 1500;
 
-const TOTAL_TIME_MS = 30000;
+const TOTAL_TIME_MS = 10000;
 const FRAMES_PER_SECOND = 25;
 
 const info = buildInfo({

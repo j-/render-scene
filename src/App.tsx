@@ -1,5 +1,5 @@
 import * as React from 'react';
-import MainScene from './scenes/colors';
+import MainScene from './scenes/graph';
 import { buildInfo } from './info';
 import { buildFrame } from './frame';
 import { utils } from './utils';
@@ -7,8 +7,8 @@ import { utils } from './utils';
 const CANVAS_WIDTH = 500;
 const CANVAS_HEIGHT = 500;
 
-const TOTAL_TIME_MS = 30000;
-const FRAMES_PER_SECOND = 30;
+const TOTAL_TIME_MS = 10000;
+const FRAMES_PER_SECOND = 25;
 
 const info = buildInfo({
   totalTimeMs: TOTAL_TIME_MS,
