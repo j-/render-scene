@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Scene } from './scene';
 import MainScene from './scenes/graph';
 import { buildInfo } from './info';
 import { buildFrame } from './frame';
@@ -27,7 +28,7 @@ const App: React.FC = () => {
 
     canvas.width = CANVAS_WIDTH;
     canvas.height = CANVAS_HEIGHT;
-    const scene = new MainScene(canvas, ctx, CANVAS_WIDTH, CANVAS_HEIGHT, utils);
+    const scene: Scene = new MainScene(canvas, ctx, CANVAS_WIDTH, CANVAS_HEIGHT, utils);
 
     const loop = (time: number) => {
       const frame = buildFrame({

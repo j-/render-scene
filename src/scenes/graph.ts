@@ -1,6 +1,5 @@
 import { Scene } from '../scene';
 import { Frame } from '../frame';
-import { Info } from '../info';
 import { hslToRgb } from '../color';
 import { createImageData } from '../image-data';
 import { Utils } from '../utils';
@@ -17,7 +16,7 @@ export default class ColorsScene extends Scene {
     this.ctx.translate(this.width / 2, this.height / 2);
   }
 
-  draw (frame: Frame, _info: Info) {
+  draw (frame: Frame) {
     const { width, height, imageData, ctx } = this;
     const { progress } = frame;
     for (let x = 0; x < width; x++) {
