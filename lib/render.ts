@@ -70,6 +70,11 @@ try {
   const order = Math.ceil(Math.log10(info.totalFrames));
 
   for (let i = 0; i < info.totalFrames; i++) {
+    if (i % info.framesPerSecond === 0) {
+      const seconds = i / info.framesPerSecond;
+      const progress = Math.round(i / info.totalFrames * 100);
+      console.log(`Rendering frame ${i} (${seconds}s, ${progress}%)`);
+    }
     const frame = buildFrame({
       framesElapsed: i,
     }, info);
