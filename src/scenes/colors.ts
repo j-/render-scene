@@ -4,7 +4,7 @@ import { Info } from '../info';
 import { getContext } from '../context';
 import { hslToRgb } from '../color';
 import { createImageData } from '../image-data';
-import { multiply } from '../curve';
+import { multiply, compose } from '../curve';
 import { Utils } from '../utils';
 
 const MAX_DISTANCE = 5000;
@@ -17,7 +17,7 @@ const LIGHTNESS = 0.8;
  * and (1, 0).
  * @see https://www.desmos.com/calculator/wdb45brrj8
  */
-const curve = multiply((x) => {
+const curve = compose(multiply(MAX_DISTANCE), (x) => {
   const a = -Math.E + 1;
   const b = 0;
   const c = 0;
@@ -34,7 +34,7 @@ const curve = multiply((x) => {
     g * x +
     h
   );
-}, MAX_DISTANCE);
+});
 
 export default class ColorsScene extends Scene {
   private readonly imageDataWidth = this.width / 2;

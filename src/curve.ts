@@ -9,6 +9,8 @@ export interface Curve {
   (t: number): number;
 }
 
+export const compose = (...fns: Curve[]): Curve => (t: number) => fns.reduceRight((mem, fn) => fn(mem), t)
+
 export const easeInOut: Curve = (t) => t * t * (3 - 2 * t);
 
 export const clip: Curve = (t) => Math.min(Math.max(0, t), 1);
@@ -27,7 +29,14 @@ export const phase = (curve: Curve, amount: number): Curve => (t) => {
   else return curve(t - (1 - amount));
 };
 
-export const multiply = (curve: Curve, amount: number): Curve => (t) => curve(t) * amount;
-
 export const sin: Curve = (t) => Math.sin(t * TAU) * 0.5 + 0.5;
 export const cos: Curve = (t) => Math.cos(t * TAU) * 0.5 + 0.5;
+
+export const ident: Curve = (t) => t;
+export const square: Curve = (t) => t ** 2;
+export const cube: Curve = compose(square, square);
+
+export const multiply = (amount: number): Curve => (t) => t * amount;
+
+export const double: Curve = multiply(2);
+export const quadruple: Curve = compose(double, double);
