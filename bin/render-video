@@ -6,7 +6,7 @@ if [ $# -ne 1 ]; then
 fi
 
 ffmpeg \
-  -i ./out/$1/frame-%03d.png \
+  -i ./out/$1/frame-%05d.png \
   -c:v libx264 \
   -pix_fmt yuv420p \
   -preset veryslow \

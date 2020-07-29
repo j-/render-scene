@@ -67,7 +67,8 @@ try {
 
   console.log(`Rendering ${info.totalFrames} frames`);
 
-  const order = Math.ceil(Math.log10(info.totalFrames));
+  // Always 5 i.e. 00000 to 99999
+  const order = 5;
 
   for (let i = 0; i < info.totalFrames; i++) {
     if (i % info.framesPerSecond === 0) {
