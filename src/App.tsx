@@ -24,7 +24,7 @@ const App: React.FC = () => {
 
   React.useEffect(() => {
     import(`./scenes/${SCENE_NAME}`)
-      .then((module: typeof import('./scenes/with-diagnostics')) => {
+      .then((module: { default: SceneConstructor }) => {
         setMainScene(() => module.default);
       });
   }, []);
