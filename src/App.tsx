@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Scene } from './scene';
-import MainScene from './scenes/rotating-squares';
+import MainScene from './scenes/xor-boxes';
 import { buildInfo } from './info';
 import { buildFrame } from './frame';
 import { utils } from './utils';
@@ -8,7 +8,7 @@ import { utils } from './utils';
 const CANVAS_WIDTH = 500;
 const CANVAS_HEIGHT = 500;
 
-const TOTAL_TIME_MS = 4000;
+const TOTAL_TIME_MS = 10000;
 const FRAMES_PER_SECOND = 25;
 
 const info = buildInfo({

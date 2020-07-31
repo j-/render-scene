@@ -15,6 +15,14 @@ export const easeInOut: Curve = (t) => t * t * (3 - 2 * t);
 
 export const clip: Curve = (t) => Math.min(Math.max(0, t), 1);
 
+export const range = (min: number, max: number): Curve => (t) => {
+  if (t > max) return 1;
+  if (t < min) return 0;
+  return (t - min) / (max - min);
+};
+
+export const loop = (times: number): Curve => (t) => t * times % 1;
+
 export const pulse = (peaks: number): Curve => (t) => {
   t = clip(t);
   if (t > 1 / peaks) return 0;

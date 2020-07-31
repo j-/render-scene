@@ -14,7 +14,7 @@ const outDir = path.resolve(__dirname, '..', 'out', sceneName);
 const WIDTH = 1500;
 const HEIGHT = 1500;
 
-const TOTAL_TIME_MS = 4000;
+const TOTAL_TIME_MS = 10000;
 const FRAMES_PER_SECOND = 25;
 
 const info = buildInfo({
