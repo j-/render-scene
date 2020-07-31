@@ -1,15 +1,17 @@
 import * as React from 'react';
-import { Scene } from './scene';
-import MainScene from './scenes/xor-boxes';
+import { Scene, SceneConstructor } from './scene';
 import { buildInfo } from './info';
 import { buildFrame } from './frame';
 import { utils } from './utils';
+import config from './config.json';
 
-const CANVAS_WIDTH = 500;
-const CANVAS_HEIGHT = 500;
+const SCENE_NAME = config.name;
 
-const TOTAL_TIME_MS = 10000;
-const FRAMES_PER_SECOND = 25;
+const CANVAS_WIDTH = config.preview.width;
+const CANVAS_HEIGHT = config.preview.height;
+
+const TOTAL_TIME_MS = config.common.time;
+const FRAMES_PER_SECOND = config.common.fps;
 
 const info = buildInfo({
   totalTimeMs: TOTAL_TIME_MS,
@@ -18,8 +20,18 @@ const info = buildInfo({
 
 const App: React.FC = () => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const [MainScene, setMainScene] = React.useState<SceneConstructor | null>(null);
 
   React.useEffect(() => {
+    import(`./scenes/${SCENE_NAME}`)
+      .then((module: typeof import('./scenes/with-diagnostics')) => {
+        setMainScene(() => module.default);
+      });
+  }, []);
+
+  React.useEffect(() => {
+    if (!MainScene) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -40,7 +52,7 @@ const App: React.FC = () => {
     let clock = requestAnimationFrame(loop);
 
     return () => cancelAnimationFrame(clock);
-  }, []);
+  }, [MainScene]);
 
   return (
     <div className="App">

@@ -1,15 +1,12 @@
 #!sh
 
-if [ $# -ne 1 ]; then
-  echo -e "Expected scene name as first argument"
-  exit 1
-fi
+SCENE_NAME="$(node -e "console.log(require('./src/config.json').name)")"
 
 ffmpeg \
-  -i ./out/$1/frame-%05d.png \
+  -i "./out/$SCENE_NAME/frame-%05d.png" \
   -c:v libx264 \
   -pix_fmt yuv420p \
   -preset veryslow \
   -tune stillimage \
   -shortest \
-  ./out/$1/$1.mp4
+  "./out/$SCENE_NAME/$SCENE_NAME.mp4"

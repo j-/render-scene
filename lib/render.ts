@@ -5,17 +5,18 @@ import { Scene, SceneConstructor } from '../src/scene';
 import { Utils } from '../src/utils';
 import { buildInfo } from '../src/info';
 import { buildFrame } from '../src/frame';
+import config from '../src/config.json';
 
-const sceneName = process.argv[2];
+const sceneName = config.name;
 const scenePath = path.resolve(__dirname, '..', 'src', 'scenes', sceneName + '.ts');
 
 const outDir = path.resolve(__dirname, '..', 'out', sceneName);
 
-const WIDTH = 1500;
-const HEIGHT = 1500;
+const WIDTH = config.render.width;
+const HEIGHT = config.render.height;
 
-const TOTAL_TIME_MS = 10000;
-const FRAMES_PER_SECOND = 25;
+const TOTAL_TIME_MS = config.common.time;
+const FRAMES_PER_SECOND = config.common.fps;
 
 const info = buildInfo({
   totalTimeMs: TOTAL_TIME_MS,
