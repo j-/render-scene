@@ -1,7 +1,7 @@
 import RandomLoopsScene from './random-loops';
 import { sin, compose, multiply } from '../curve';
 
-export default class FatLoopsScene extends RandomLoopsScene {
+export default class extends RandomLoopsScene {
   protected readonly LINE_WIDTH = this.width / 50;
 
   transition (progress: number) {

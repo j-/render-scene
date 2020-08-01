@@ -2,7 +2,7 @@ import { Scene } from '../scene';
 import { Frame } from '../frame';
 import { loop } from '../curve';
 
-export default class XorBoxesScene extends Scene {
+export default class extends Scene {
   private readonly LOOPS = 5;
   private readonly SQUARES = 8;
   private readonly MAX_SQUARE_SIZE = Math.min(this.width, this.height) / (this.SQUARES - 1);

@@ -3,7 +3,7 @@ import { Scene } from '../scene';
 import { Frame } from '../frame';
 import { sin, cos } from '../curve';
 
-export default class RandomLoopsScene extends Scene {
+export default class extends Scene {
   protected readonly GRID_SIZE = this.width / 20;
   protected readonly CIRCLE_RADIUS = this.GRID_SIZE / 2;
   protected readonly GRID_COUNT_X = Math.ceil(this.width / this.GRID_SIZE);

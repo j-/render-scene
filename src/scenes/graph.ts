@@ -8,7 +8,7 @@ const SATURATION = 1;
 const LIGHTNESS = 0.7;
 const TAU = Math.PI * 2;
 
-export default class ColorsScene extends Scene {
+export default class extends Scene {
   private readonly imageData = createImageData(this.ctx);
 
   constructor (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, width: number, height: number, utils: Utils) {

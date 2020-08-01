@@ -2,7 +2,7 @@ import { Scene } from '../scene';
 import { Frame } from '../frame';
 import { Info } from '../info';
 
-export default class SceneWithDiagnostics extends Scene {
+export default class extends Scene {
   draw (frame: Frame, info: Info) {
     this.clear();
     const { ctx } = this;

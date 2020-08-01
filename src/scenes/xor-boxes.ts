@@ -7,7 +7,7 @@ const topRight    = compose(easeInOut, range(0.2, 0.4))
 const bottomRight = compose(easeInOut, range(0.4, 0.6))
 const bottomLeft  = compose(easeInOut, range(0.6, 0.8))
 
-export default class XorBoxesScene extends Scene {
+export default class extends Scene {
   private readonly LOOPS = 2;
   private readonly MIN_SCALE = 1;
   private readonly MAX_SCALE = 2;

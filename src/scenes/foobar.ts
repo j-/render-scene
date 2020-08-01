@@ -2,7 +2,7 @@ import SceneWithDiagnostics from './with-diagnostics';
 import { Frame } from '../frame';
 import { Info } from '../info';
 
-export default class FoobarScene extends SceneWithDiagnostics {
+export default class extends SceneWithDiagnostics {
   draw (frame: Frame, info: Info) {
     super.draw(frame, info);
     const { ctx, width, height } = this;

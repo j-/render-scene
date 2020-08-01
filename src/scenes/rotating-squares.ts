@@ -1,7 +1,7 @@
 import { Scene } from '../scene';
 import { Frame } from '../frame';
 
-export default class RotatingSquaresScene extends Scene {
+export default class extends Scene {
   private readonly SQUARE_SIZE = this.width / 4;
   private readonly BLACK_COLOR = 'black';
   private readonly WHITE_COLOR = 'white';

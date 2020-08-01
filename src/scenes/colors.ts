@@ -36,7 +36,7 @@ const curve = compose(multiply(MAX_DISTANCE), (x) => {
   );
 });
 
-export default class ColorsScene extends Scene {
+export default class extends Scene {
   private readonly imageDataWidth = this.width / 2;
   private readonly imageDataHeight = this.height / 2;
   private readonly bufferCanvas = this.utils.createCanvas(this.imageDataWidth, this.imageDataHeight);
