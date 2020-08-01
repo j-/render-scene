@@ -37,6 +37,7 @@ export const phase = (curve: Curve, amount: number): Curve => (t) => {
   else return curve(t - (1 - amount));
 };
 
+export const turn: Curve = (t) => t * TAU;
 export const sin: Curve = (t) => Math.sin(t * TAU) * 0.5 + 0.5;
 export const cos: Curve = (t) => Math.cos(t * TAU) * 0.5 + 0.5;
 
