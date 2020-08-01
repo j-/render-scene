@@ -3,9 +3,9 @@ import { Frame } from '../frame';
 import { easeInOut, range, compose, loop } from '../curve';
 
 const topLeft     = compose(easeInOut, range(0.0, 0.2));
-const topRight    = compose(easeInOut, range(0.2, 0.4))
-const bottomRight = compose(easeInOut, range(0.4, 0.6))
-const bottomLeft  = compose(easeInOut, range(0.6, 0.8))
+const topRight    = compose(easeInOut, range(0.2, 0.4));
+const bottomRight = compose(easeInOut, range(0.4, 0.6));
+const bottomLeft  = compose(easeInOut, range(0.6, 0.8));
 
 export default class extends Scene {
   private readonly LOOPS = 2;
