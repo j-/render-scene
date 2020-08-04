@@ -1,5 +1,6 @@
 import { Scene } from '../scene';
 import { Frame } from '../frame';
+import { compose, range, multiply, easeInOut } from '../curve';
 
 const PI = Math.PI;
 const TAU = 2 * PI;
@@ -15,11 +16,11 @@ export default class extends Scene {
     const w = TRIANGLE_WIDTH;
     const h = TRIANGLE_HEIGHT;
 
-    const countX = width / w * 2 + 1;
+    const countX = width / w * 2;
     const countY = height / h;
 
-    for (let y = 0; y < countY; y++) {
-      for (let x = -1; x < countX; x++) {
+    for (let y = -3; y < countY + 3; y++) {
+      for (let x = -3; x < countX + 3; x++) {
         const i = (Math.floor(y / 2) + x) % 3;
         const color = `hsl(${i * 120}, 80%, 80%)`;
         const odd = x % 2;
