@@ -10,8 +10,9 @@ export default class extends Scene {
   protected readonly TRIANGLE_WIDTH = this.SCALE;
   protected readonly TRIANGLE_HEIGHT = this.TRIANGLE_WIDTH * Math.sin(TAU / 3);
 
-  draw (_frame: Frame) {
+  draw (frame: Frame) {
     const { ctx, width, height, TRIANGLE_WIDTH, TRIANGLE_HEIGHT } = this;
+    const { progress } = frame;
     this.clear();
     const w = TRIANGLE_WIDTH;
     const h = TRIANGLE_HEIGHT;
@@ -24,9 +25,22 @@ export default class extends Scene {
         const i = (Math.floor(y / 2) + x) % 3;
         const color = `hsl(${i * 120}, 80%, 80%)`;
         const odd = x % 2;
+        const rotate = compose(
+          // Rotate one third so the orientation is still "up" (or "down")
+          multiply(TAU / 3),
+          // Ease the rotation
+          easeInOut,
+          // Rotate for part of this color's turn
+          range(0.2, 0.8),
+          // Only move one color at a time
+          range(i * 1 / 3, (i + 1) * 1 / 3),
+        )(progress);
         ctx.save();
-        ctx.translate(x * w / 2 + (y % 2 ? w / 2 : 0), y * h);
-        ctx.scale(1, odd ? -1 : 1);
+        ctx.translate(
+          x * w / 2 + (y % 2 ? w / 2 : 0),
+          y * h - (odd ? (1 / 3) * h : 0),
+        );
+        ctx.rotate(odd ? rotate + PI : rotate);
         ctx.beginPath();
         this.drawShapePath();
         ctx.closePath();
@@ -39,12 +53,14 @@ export default class extends Scene {
 
   drawShapePath () {
     const { ctx, TRIANGLE_WIDTH, TRIANGLE_HEIGHT } = this;
+    const midX = 1 / 2;
+    const midY = 2 / 3;
     const x0 = 0;
-    const y0 = -TRIANGLE_HEIGHT / 2;
-    const x1 = TRIANGLE_WIDTH / 2;
-    const y1 = TRIANGLE_HEIGHT / 2;
-    const x2 = -TRIANGLE_WIDTH / 2;
-    const y2 = TRIANGLE_HEIGHT / 2;
+    const y0 = TRIANGLE_HEIGHT * -midY;
+    const x1 = TRIANGLE_WIDTH * midX;
+    const y1 = TRIANGLE_HEIGHT * (1 - midY);
+    const x2 = TRIANGLE_WIDTH * -midX;
+    const y2 = TRIANGLE_HEIGHT * (1 - midY);
     ctx.moveTo(x0, y0);
     ctx.lineTo(x1, y1);
     ctx.lineTo(x2, y2);
