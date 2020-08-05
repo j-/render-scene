@@ -14,6 +14,11 @@
     "seedrandom": "^3.0.5"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^5.3.19",
+    "@storybook/addon-links": "^5.3.19",
+    "@storybook/addons": "^5.3.19",
+    "@storybook/preset-create-react-app": "^3.1.4",
+    "@storybook/react": "^5.3.19",
     "@types/jest": "^25.2.3",
     "@types/react": "16.9.34",
     "@types/react-dom": "16.9.5",
@@ -29,7 +34,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "render": "ts-node --script-mode ./lib/render"
+    "render": "ts-node --script-mode ./lib/render",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "browserslist": [
     ">0.2%",
