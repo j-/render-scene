@@ -29,12 +29,12 @@ export const pulse = (peaks: number): Curve => (t) => {
   return Math.sin(-PI / 2 + t * TAU * peaks) * 0.5 + 0.5;
 };
 
-export const phase = (curve: Curve, amount: number): Curve => (t) => {
+export const phase = (amount: number): Curve => (t) => {
   amount %= 1;
   amount += 1;
   amount %= 1;
-  if (t < (1 - amount)) return curve(t + amount);
-  else return curve(t - (1 - amount));
+  if (t < (1 - amount)) return t + amount;
+  else return t - (1 - amount);
 };
 
 export const sin: Curve = (t) => Math.sin(t * TAU) * 0.5 + 0.5;

@@ -1,6 +1,19 @@
 import React from 'react';
 import CurveGraph from './CurveGraph';
-import { ident, easeInOut, range, loop, pulse, phase, sin, cos, multiply, square, cube } from './curve';
+import {
+  compose,
+  cos,
+  cube,
+  easeInOut,
+  ident,
+  loop,
+  multiply,
+  phase,
+  pulse,
+  range,
+  sin,
+  square,
+} from './curve';
 
 export default {
   title: 'CurveGraph',
@@ -24,13 +37,13 @@ export const Pulse1 = () => <CurveGraph curve={pulse(1)} />;
 export const Pulse2 = () => <CurveGraph curve={pulse(2)} />;
 export const Pulse3 = () => <CurveGraph curve={pulse(3)} />;
 
-export const PhaseIdent02 = () => <CurveGraph curve={phase(ident, 0.2)} />;
+export const PhaseIdent02 = () => <CurveGraph curve={phase(0.2)} />;
 PhaseIdent02.story = { name: 'Phase ident 0.2' }
 
-export const PhaseIdent05 = () => <CurveGraph curve={phase(ident, 0.5)} />;
+export const PhaseIdent05 = () => <CurveGraph curve={phase(0.5)} />;
 PhaseIdent05.story = { name: 'Phase ident 0.5' }
 
-export const PhasePulse2025 = () => <CurveGraph curve={phase(pulse(2), -0.25)} />;
+export const PhasePulse2025 = () => <CurveGraph curve={compose(pulse(2), phase(-0.25))} />;
 PhasePulse2025.story = { name: 'Phase pulse(2) -0.25' }
 
 export const Sin = () => <CurveGraph curve={sin} />;
