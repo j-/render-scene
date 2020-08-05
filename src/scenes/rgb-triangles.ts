@@ -6,7 +6,7 @@ const PI = Math.PI;
 const TAU = 2 * PI;
 
 export default class extends Scene {
-  protected readonly SCALE = this.width / 10;
+  protected readonly SCALE = this.width / 5;
   protected readonly TRIANGLE_WIDTH = this.SCALE;
   protected readonly TRIANGLE_HEIGHT = this.TRIANGLE_WIDTH * Math.sin(TAU / 3);
 
@@ -23,6 +23,7 @@ export default class extends Scene {
     for (let y = -3; y < countY + 3; y++) {
       for (let x = -3; x < countX + 3; x++) {
         const i = (Math.floor(y / 2) + x) % 3;
+        const moving = progress > i * 1 / 3 && progress < (i + 1) * 1 / 3;
         const color = `hsl(${i * 120}, 80%, 80%)`;
         const odd = x % 2;
         const rotate = compose(
@@ -41,14 +42,18 @@ export default class extends Scene {
           y * h - (odd ? (1 / 3) * h : 0),
         );
         ctx.rotate(odd ? rotate + PI : rotate);
+        ctx.scale(0.9, 0.9);
         ctx.beginPath();
         this.drawShapePath();
         ctx.closePath();
         ctx.fillStyle = color;
+        ctx.globalCompositeOperation = moving ? 'source-over' : 'destination-over';
         ctx.fill();
         ctx.restore();
       }
     }
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillRect(0, 0, width, height);
   }
 
   drawShapePath () {
