@@ -3,6 +3,7 @@ import { getTotalDistance, getDistance } from './distance';
 
 export const getPartialLinePoints = (points: Points, target: number): Points => {
   const result: Points = [];
+  if (points.length < 2) return result;
   const totalDistance = getTotalDistance(points);
   const targetDistance = target * totalDistance;
 

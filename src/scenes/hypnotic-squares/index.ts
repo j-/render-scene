@@ -6,6 +6,7 @@ import source from './source';
 import { Boxes } from './types';
 import { boxesToSpiral } from './boxes-to-spiral';
 import { getPartialLinePoints } from './get-partial-line-points';
+import { createImageData } from 'canvas';
 
 const clamp = (val: number, min: number, max: number) => (
   Math.min(max, Math.max(min, val))
@@ -28,7 +29,7 @@ export default class extends Scene {
   protected readonly srcCanvas = this.utils.createCanvas(this.SOURCE_SIZE, this.SOURCE_SIZE);
   protected readonly srcCtx = getContext(this.srcCanvas);
 
-  protected srcID: Uint8ClampedArray;
+  protected srcID: Uint8ClampedArray = createImageData(this.SOURCE_SIZE, this.SOURCE_SIZE).data;
 
   constructor(...args: SceneConstructorParams) {
     super(...args);
@@ -121,10 +122,12 @@ export default class extends Scene {
     }
     const spiral = boxesToSpiral(boxes);
     const points = getPartialLinePoints(spiral, p);
-    ctx.moveTo(points[0][0], points[0][1]);
-    // -2 points at the end
-    for (let i = 1; i < points.length - 2; i++) {
-      ctx.lineTo(points[i][0], points[i][1]);
+    if (points.length) {
+      ctx.moveTo(points[0][0], points[0][1]);
+      // -2 points at the end
+      for (let i = 1; i < points.length - 2; i++) {
+        ctx.lineTo(points[i][0], points[i][1]);
+      }
     }
     ctx.restore();
   }

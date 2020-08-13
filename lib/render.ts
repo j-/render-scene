@@ -1,6 +1,6 @@
 import fs, { createWriteStream } from 'fs';
 import path from 'path';
-import { createCanvas, Canvas } from 'canvas';
+import { createCanvas, loadImage, Canvas } from 'canvas';
 import { Scene, SceneConstructor } from '../src/scene';
 import { Utils } from '../src/utils';
 import { buildInfo } from '../src/info';
@@ -8,7 +8,7 @@ import { buildFrame } from '../src/frame';
 import config from '../src/config.json';
 
 const sceneName = config.name;
-const scenePath = path.resolve(__dirname, '..', 'src', 'scenes', sceneName + '.ts');
+const scenePath = path.resolve(__dirname, '..', 'src', 'scenes', sceneName);
 
 const outDir = path.resolve(__dirname, '..', 'out', sceneName);
 
@@ -23,14 +23,6 @@ const info = buildInfo({
   framesPerSecond: FRAMES_PER_SECOND,
 });
 
-try {
-  fs.statSync(scenePath);
-  console.error(`Scene with name "${sceneName}" found at path "${scenePath}"`);
-} catch (err) {
-  console.error(`Could not find scene with name "${sceneName}" at path "${scenePath}"`);
-  process.exit(1);
-}
-
 // try {
 //   fs.mkdirSync(outDir, { recursive: true });
 //   console.error(`Writing to "${outDir}"`);
@@ -43,10 +35,14 @@ try {
   let SceneConstructor: SceneConstructor;
 
   try {
-    SceneConstructor = (await import(scenePath)).default;
+    SceneConstructor = (await import(scenePath + '.ts')).default;
   } catch (err) {
-    console.error(`Error importing scene: ${err.message}`);
-    process.exit(1);
+    try {
+      SceneConstructor = (await import(scenePath + '/index.ts')).default;
+    } catch (err) {
+      console.error(`Error importing scene: ${err.message}`);
+      process.exit(1);
+    }
   }
 
   let canvas: Canvas;
@@ -56,9 +52,8 @@ try {
     canvas = createCanvas(WIDTH, HEIGHT);
     const ctx = canvas.getContext('2d');
     const utils: Utils = {
-      createCanvas(width, height) {
-        return (createCanvas(width, height) as unknown) as HTMLCanvasElement;
-      },
+      createCanvas: (createCanvas as unknown) as Utils['createCanvas'],
+      loadImage: (loadImage as unknown) as Utils['loadImage'],
     };
     scene = new SceneConstructor((canvas as unknown) as HTMLCanvasElement, ctx, WIDTH, HEIGHT, utils);
   } catch (err) {
