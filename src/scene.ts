@@ -40,3 +40,5 @@ export abstract class Scene {
 }
 
 export type SceneConstructor = new (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, width: number, height: number, utils: Utils) => Scene;
+
+export type SceneConstructorParams = ConstructorParameters<SceneConstructor>

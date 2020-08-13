@@ -1,9 +1,12 @@
 import { createCanvas } from './canvas';
+import { loadImage } from './image';
 
 export interface Utils {
-  createCanvas(width: number, height: number): HTMLCanvasElement;
+  createCanvas: typeof createCanvas;
+  loadImage: typeof loadImage;
 }
 
 export const utils: Utils = {
   createCanvas,
+  loadImage,
 }
