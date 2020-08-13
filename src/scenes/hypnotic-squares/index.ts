@@ -85,6 +85,7 @@ export default class extends Scene {
         this.drawSquare(x, y, p);
       }
     }
+    ctx.lineWidth = width / 500;
     ctx.stroke();
   }
 
