@@ -108,7 +108,8 @@ export default class extends Scene {
     );
     ctx.translate(x * SQUARE_SIZE, y * SQUARE_SIZE);
     const boxes: Boxes = [];
-    for (let step = 0; step < steps; step++) {
+    // +1 extra step here
+    for (let step = 0; step < steps + 1; step++) {
       const p = step / steps;
       const size = (1 - p) * SQUARE_SIZE;
       boxes.push([
@@ -121,7 +122,8 @@ export default class extends Scene {
     const spiral = boxesToSpiral(boxes);
     const points = getPartialLinePoints(spiral, p);
     ctx.moveTo(points[0][0], points[0][1]);
-    for (let i = 1; i < points.length; i++) {
+    // -2 points at the end
+    for (let i = 1; i < points.length - 2; i++) {
       ctx.lineTo(points[i][0], points[i][1]);
     }
     ctx.restore();
