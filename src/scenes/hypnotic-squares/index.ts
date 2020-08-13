@@ -61,7 +61,25 @@ export default class extends Scene {
         const i = Math.sqrt(x ** 2 + y ** 2) / Math.sqrt(2 * SQUARE_COUNT ** 2);
         const p = compose(
           easeInOutCirc,
-          range(i / 3, i / 3 + 0.5),
+          range(i / 2, i / 2 + 0.5),
+          (x) => {
+            const a = -Math.E + 1;
+            const b = 0;
+            const c = 0;
+            const d = 0;
+            const f = 0;
+            const g = Math.E - 1;
+            const h = 0;
+            return (
+              a * x ** 6 +
+              b * x ** 5 +
+              c * x ** 4 +
+              d * x ** 3 +
+              f * x ** 2 +
+              g * x +
+              h
+            );
+          },
         )(frame.progress);
         this.drawSquare(x, y, p);
       }
