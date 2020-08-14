@@ -1,7 +1,7 @@
 import { Scene, SceneConstructorParams } from '../../scene';
 import { Frame } from '../../frame';
 import { getContext } from '../../context';
-import { Curve, compose, range } from '../../curve';
+import { compose, range, easeInOut } from '../../curve';
 import source from './source';
 import { Boxes } from './types';
 import { boxesToSpiral } from './boxes-to-spiral';
@@ -10,12 +10,6 @@ import { createImageData } from 'canvas';
 
 const clamp = (val: number, min: number, max: number) => (
   Math.min(max, Math.max(min, val))
-);
-
-const easeInOutCirc: Curve = (x: number) => (
-  x < 0.5 ?
-    (1 - Math.sqrt(1 - Math.pow(2 * x, 2))) / 2 :
-    (Math.sqrt(1 - Math.pow(-2 * x + 2, 2)) + 1) / 2
 );
 
 export default class extends Scene {
@@ -54,14 +48,14 @@ export default class extends Scene {
   draw (frame: Frame) {
     const { srcID, ctx, width, height, SQUARE_COUNT } = this;
     if (!srcID) return;
+    ctx.lineWidth = width / 500;
     ctx.fillStyle = '#fff';
     ctx.fillRect(0, 0, width, height);
-    ctx.beginPath();
     for (let y = 0; y < SQUARE_COUNT; y++) {
       for (let x = 0; x < SQUARE_COUNT; x++) {
-        const i = Math.sqrt(x ** 2 + y ** 2) / Math.sqrt(2 * SQUARE_COUNT ** 2);
+        const i = Math.sqrt(((SQUARE_COUNT - 1) / 2 - x) ** 2 + ((SQUARE_COUNT - 1) / 2 - y) ** 2) / Math.sqrt(2 * SQUARE_COUNT ** 2);
         const p = compose(
-          easeInOutCirc,
+          easeInOut,
           range(i / 2, i / 2 + 0.5),
           (x) => {
             const a = -Math.E + 1;
@@ -85,13 +79,12 @@ export default class extends Scene {
         this.drawSquare(x, y, p);
       }
     }
-    ctx.lineWidth = width / 500;
-    ctx.stroke();
   }
 
   drawSquare (x: number, y: number, p: number) {
     const { ctx, MIN_STEPS, DELTA_STEPS, SQUARE_SIZE } = this;
     ctx.save();
+    ctx.beginPath();
     const ltl = this.getLightness(x * 2, y * 2);
     const ltr = this.getLightness(x * 2 + 1, y * 2);
     const lbl = this.getLightness(x * 2, y * 2 + 1);
@@ -121,15 +114,20 @@ export default class extends Scene {
         size,
       ]);
     }
-    const spiral = boxesToSpiral(boxes);
+    const spiral = boxesToSpiral(boxes).reverse();
     const points = getPartialLinePoints(spiral, p);
-    if (points.length) {
-      ctx.moveTo(points[0][0], points[0][1]);
+    if (points.length > 3) {
+      ctx.moveTo(points[2][0], points[2][1]);
       // -2 points at the end
-      for (let i = 1; i < points.length - 2; i++) {
+      for (let i = 3; i < points.length; i++) {
         ctx.lineTo(points[i][0], points[i][1]);
       }
     }
+    const h = clamp(p * 360, 0, 360);
+    const s = p === 1 ? 0 : clamp((1 + (1 / (100 * (p - 1)))) * 100, 0, 100);
+    const l = p === 1 ? 0 : clamp(50 - (1 - (1 + (1 / (100 * (p - 1))))) * 50, 0, 100);
+    ctx.strokeStyle = `hsl(${h}, ${s}%, ${l}%)`;
+    ctx.stroke();
     ctx.restore();
   }
 
