@@ -125,7 +125,7 @@ export default class extends Scene {
     }
     const h = clamp(p * 360, 0, 360);
     const s = p === 1 ? 0 : clamp((1 + (1 / (100 * (p - 1)))) * 100, 0, 100);
-    const l = p === 1 ? 0 : clamp(50 - (1 - (1 + (1 / (100 * (p - 1))))) * 50, 0, 100);
+    const l = p === 1 ? 0 : clamp(50 - (1 - (1 + (1 / (50 * (p - 1))))) * 50, 0, 100);
     ctx.strokeStyle = `hsl(${h}, ${s}%, ${l}%)`;
     ctx.stroke();
     ctx.restore();
