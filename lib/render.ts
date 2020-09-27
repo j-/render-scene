@@ -1,4 +1,5 @@
-import fs, { createWriteStream } from 'fs';
+import { createWriteStream } from 'fs';
+import mkdirp from 'mkdirp';
 import path from 'path';
 import { createCanvas, loadImage, Canvas } from 'canvas';
 import { Scene, SceneConstructor } from '../src/scene';
@@ -23,13 +24,13 @@ const info = buildInfo({
   framesPerSecond: FRAMES_PER_SECOND,
 });
 
-// try {
-//   fs.mkdirSync(outDir, { recursive: true });
-//   console.error(`Writing to "${outDir}"`);
-// } catch (err) {
-//   console.error(`Could not create output directory: ${err.message}`);
-//   process.exit(1);
-// }
+try {
+  mkdirp.sync(outDir);
+  console.error(`Writing to "${outDir}"`);
+} catch (err) {
+  console.error(`Could not create output directory: ${err.message}`);
+  process.exit(1);
+}
 
 (async () => {
   let SceneConstructor: SceneConstructor;
