@@ -57,6 +57,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <h1>Scene</h1>
+      <p><a href={`${SCENE_NAME}.mp4`}>Latest render</a></p>
       <canvas ref={canvasRef} />
     </div>
   );
