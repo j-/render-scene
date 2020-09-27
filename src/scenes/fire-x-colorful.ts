@@ -13,8 +13,8 @@ export default class extends FireX {
         phase(frame.progress * -10),
         multiply(1 / colors),
       )(colors - i);
-      const s = 1;
-      const l = (i / colors) ** 0.2 * 0.75;
+      const s = 0.8;
+      const l = (i / colors) ** 0.2 * 0.8;
       [
         CHANNELS[i * 3 + 0],
         CHANNELS[i * 3 + 1],
