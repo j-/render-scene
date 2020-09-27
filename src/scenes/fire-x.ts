@@ -78,7 +78,7 @@ export default class extends Scene {
 
   doSource (frame: Frame) {
     const { buffer, BUFFER_LENGTH, BUFFER_WIDTH } = this;
-    const temperature = frame.timeRemainingMs > 3000 ? MAX_TEMPERATURE : 0;
+    const temperature = frame.timeRemainingMs > 5000 ? MAX_TEMPERATURE : 0;
     buffer.fill(temperature, BUFFER_LENGTH - BUFFER_WIDTH, BUFFER_LENGTH);
   }
 
