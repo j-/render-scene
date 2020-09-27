@@ -39,8 +39,6 @@ const App: React.FC = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    canvas.width = CANVAS_WIDTH;
-    canvas.height = CANVAS_HEIGHT;
     const scene: Scene = new MainScene(canvas, ctx, CANVAS_WIDTH, CANVAS_HEIGHT, utils);
 
     const loop = (time: number) => {
@@ -75,7 +73,7 @@ const App: React.FC = () => {
           style={{ width: CANVAS_WIDTH }}
         />
       </p>
-      <canvas ref={canvasRef} />
+      <canvas ref={canvasRef} width={CANVAS_WIDTH} height={CANVAS_HEIGHT} />
     </div>
   );
 };
