@@ -1,4 +1,5 @@
 build/
 node_modules/
 out/
+/public/*.mp4
 /src/config.json
