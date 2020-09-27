@@ -11,4 +11,5 @@ ffmpeg \
   -shortest \
   "./out/$SCENE_NAME/$SCENE_NAME.mp4"
 
+rm "$PWD/public/$SCENE_NAME.mp4"
 ln -s "$PWD/out/$SCENE_NAME/$SCENE_NAME.mp4" "$PWD/public/$SCENE_NAME.mp4"
