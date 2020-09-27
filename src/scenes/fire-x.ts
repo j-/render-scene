@@ -1,5 +1,5 @@
 import seedrandom from 'seedrandom';
-import { Scene, SceneConstructorParams } from '../scene';
+import { Scene } from '../scene';
 import { Frame } from '../frame';
 import { getContext } from '../context';
 import { createImageData } from '../image-data';
@@ -61,11 +61,6 @@ export default class extends Scene {
   protected readonly bufferCtx = getContext(this.bufferCanvas);
   protected readonly bufferID = createImageData(this.bufferCtx);
   protected random = seedrandom();
-
-  constructor (...params: SceneConstructorParams) {
-    super(...params);
-    this.buffer.fill(0, 0, this.BUFFER_LENGTH);
-  }
 
   draw (frame: Frame) {
     this.random = seedrandom(frame.framesElapsed.toString());
