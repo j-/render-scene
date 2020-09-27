@@ -16,9 +16,9 @@ export default class extends Scene {
         ctx.beginPath();
         ctx.rect(x * SIZE, y * SIZE, SIZE, SIZE);
         ctx.closePath();
-        const xx = (x - SQUARES / 2);
-        const yy = (y - SQUARES / 2);
-        const loops = xx * yy;
+        const xx = (x - SQUARES / 2) + 0.5;
+        const yy = (y - SQUARES / 2) + 0.5;
+        const loops = Math.floor(xx * yy);
         const hue = compose(multiply(360), loop(loops))(progress);
         ctx.fillStyle = `hsl(${hue}, 80%, 80%)`;
         ctx.fill();
