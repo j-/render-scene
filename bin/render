@@ -1,0 +1,3 @@
+#!sh
+
+render-frames && render-video
