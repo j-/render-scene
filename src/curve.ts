@@ -45,6 +45,7 @@ export const square: Curve = (t) => t ** 2;
 export const cube: Curve = compose(square, square);
 
 export const multiply = (amount: number): Curve => (t) => t * amount;
+export const pow = (amount: number): Curve => (t) => t ** amount;
 export const turn = multiply(TAU);
 
 export const double: Curve = multiply(2);
