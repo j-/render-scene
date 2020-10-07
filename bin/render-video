@@ -1,4 +1,4 @@
-#!sh
+#!/usr/bin/env sh
 
 SCENE_NAME="$(node -e "console.log(require('./src/config.json').name)")"
 
