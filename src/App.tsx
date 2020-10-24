@@ -20,7 +20,7 @@ const info = buildInfo({
 
 const App: React.FC = () => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  const rangeRef = React.useRef<HTMLInputElement>(null);
+  const progressRef = React.useRef<HTMLProgressElement>(null);
   const [MainScene, setMainScene] = React.useState<SceneConstructor | null>(null);
 
   React.useEffect(() => {
@@ -48,8 +48,8 @@ const App: React.FC = () => {
       scene.draw(frame, info);
       clock = requestAnimationFrame(loop);
 
-      const range = rangeRef.current;
-      if (range) range.valueAsNumber = frame.progress;
+      const progress = progressRef.current;
+      if (progress) progress.value = frame.progress;
     };
     let clock = requestAnimationFrame(loop);
 
@@ -61,15 +61,9 @@ const App: React.FC = () => {
       <h1>Scene</h1>
       <p><a href={`${SCENE_NAME}.mp4`}>Latest render</a></p>
       <p>
-        <input
-          ref={rangeRef}
-          type="range"
-          min={0}
+        <progress
+          ref={progressRef}
           max={1}
-          readOnly={true}
-          disabled={true}
-          step={0.01}
-          defaultValue={0}
           style={{ width: CANVAS_WIDTH }}
         />
       </p>
