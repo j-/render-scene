@@ -5,14 +5,16 @@ import { compose, loop, multiply, turn } from '../curve';
 const shapeX = new Path2D('M-2-1l1-1 1 1 1-1 1 1-1 1 1 1-1 1-1-1-1 1-1-1 1-1z');
 
 export default class extends Scene {
+  protected readonly LOOPS = 2;
   protected readonly X_COUNT = 10;
   protected readonly X_SIZE = this.width / (3 * this.X_COUNT);
 
   draw (frame: Frame) {
-    const { ctx, width, height, X_SIZE } = this;
+    const { ctx, width, height, LOOPS, X_SIZE } = this;
     const { progress } = frame;
     this.clear();
-    ctx.fillStyle = progress < 0.5 ? 'white' : 'black';
+    const loopedProgress = loop(LOOPS)(progress);
+    ctx.fillStyle = loopedProgress < 0.5 ? 'white' : 'black';
     ctx.fillRect(0, 0, width, height);
     ctx.save();
     ctx.translate(width / 2, height / 2);
@@ -24,7 +26,7 @@ export default class extends Scene {
   }
 
   drawAtom (x: number, y: number, frame: Frame) {
-    const { ctx } = this;
+    const { ctx, LOOPS } = this;
     const { progress } = frame;
     const isOdd = x % 2;
     ctx.save();
@@ -36,11 +38,12 @@ export default class extends Scene {
       loop(2),
     )(progress);
     ctx.rotate(angle);
-    if (isOdd && progress < 0.5) {
+    const loopedProgress = loop(LOOPS)(progress);
+    if (isOdd && loopedProgress < 0.5) {
       ctx.fillStyle = 'black';
       ctx.fill(shapeX);
     }
-    if (!isOdd && progress >= 0.5) {
+    if (!isOdd && loopedProgress >= 0.5) {
       ctx.fillStyle = 'white';
       ctx.fill(shapeX);
     }
