@@ -1,6 +1,6 @@
 import { Scene } from '../scene';
 import { Frame } from '../frame';
-import { compose, multiply, phase, sin, square } from '../curve';
+import { compose, loop, multiply, phase, sin, square } from '../curve';
 
 const { PI } = Math;
 const TAU = PI * 2;
@@ -28,6 +28,7 @@ export default class extends Scene {
         square,
         sin,
         phase(ring / NUM_RINGS * - 4),
+        loop(2),
       )(progress);
       for (let circle = 0; circle < count; circle++) {
         const angle = circle / count * TAU;
