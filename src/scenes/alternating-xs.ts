@@ -2,8 +2,6 @@ import { Scene } from '../scene';
 import { Frame } from '../frame';
 import { compose, loop, multiply, turn } from '../curve';
 
-const shapeX = new Path2D('M-2-1l1-1 1 1 1-1 1 1-1 1 1 1-1 1-1-1-1 1-1-1 1-1z');
-
 export default class extends Scene {
   protected readonly LOOPS = 2;
   protected readonly X_COUNT = 10;
@@ -25,6 +23,36 @@ export default class extends Scene {
     ctx.restore();
   }
 
+  drawPath () {
+    const { ctx } = this;
+    ctx.beginPath();
+    let x = -2; let y = -1;
+    ctx.moveTo(x, y);
+    x += 1; y += -1;
+    ctx.lineTo(x, y);
+    x += 1; y += 1;
+    ctx.lineTo(x, y);
+    x += 1; y += -1;
+    ctx.lineTo(x, y);
+    x += 1; y += 1;
+    ctx.lineTo(x, y);
+    x += -1; y += 1;
+    ctx.lineTo(x, y);
+    x += 1; y += 1;
+    ctx.lineTo(x, y);
+    x += -1; y += 1;
+    ctx.lineTo(x, y);
+    x += -1; y += -1;
+    ctx.lineTo(x, y);
+    x += -1; y += 1;
+    ctx.lineTo(x, y);
+    x += -1; y += -1;
+    ctx.lineTo(x, y);
+    x += 1; y += -1;
+    ctx.lineTo(x, y);
+    ctx.closePath();
+  }
+
   drawAtom (x: number, y: number, frame: Frame) {
     const { ctx, LOOPS } = this;
     const { progress } = frame;
@@ -41,11 +69,13 @@ export default class extends Scene {
     const loopedProgress = loop(LOOPS)(progress);
     if (isOdd && loopedProgress < 0.5) {
       ctx.fillStyle = 'black';
-      ctx.fill(shapeX);
+      this.drawPath();
+      ctx.fill();
     }
     if (!isOdd && loopedProgress >= 0.5) {
       ctx.fillStyle = 'white';
-      ctx.fill(shapeX);
+      this.drawPath();
+      ctx.fill();
     }
     ctx.restore();
   }
