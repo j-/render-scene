@@ -15,8 +15,11 @@ export default class extends Scene {
     ctx.fillStyle = progress < 0.5 ? 'white' : 'black';
     ctx.fillRect(0, 0, width, height);
     ctx.save();
+    ctx.translate(width / 2, height / 2);
     ctx.scale(X_SIZE, X_SIZE);
-    this.drawOrganism(0, 0, this.X_COUNT / 3, frame);
+    const angle = compose(multiply(0.25), turn)(progress);
+    ctx.rotate(angle);
+    this.drawOrganism(X_SIZE * -1.5, X_SIZE * -1.5, this.X_COUNT, frame);
     ctx.restore();
   }
 
@@ -37,7 +40,7 @@ export default class extends Scene {
       ctx.fillStyle = 'black';
       ctx.fill(shapeX);
     }
-    if (!isOdd && progress > 0.5) {
+    if (!isOdd && progress >= 0.5) {
       ctx.fillStyle = 'white';
       ctx.fill(shapeX);
     }
