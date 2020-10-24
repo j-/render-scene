@@ -1,6 +1,7 @@
 import { Scene } from '../scene';
 import { Frame } from '../frame';
 import { compose, loop, multiply, phase, sin, square } from '../curve';
+import { getContext } from '../context';
 
 const { PI } = Math;
 const TAU = PI * 2;
@@ -11,8 +12,46 @@ export default class extends Scene {
   protected readonly MAX_RADIUS = this.width / 40;
   protected readonly RADIUS_DELTA = this.width / 25;
 
+  private readonly bufferCanvas = this.utils.createCanvas(this.width, this.height);
+  private readonly bufferCtx = getContext(this.bufferCanvas);
+
   draw (frame: Frame) {
-    const { ctx, width, height, NUM_RINGS, MIN_RADIUS, MAX_RADIUS, RADIUS_DELTA } = this;
+    const { ctx, bufferCtx, width, height } = this;
+    this.clear();
+    this.drawBuffer(frame);
+    const bufferImageData = bufferCtx.getImageData(0, 0, width, height);
+    const imageData = ctx.createImageData(width, height);
+    const modifierR = 1.000;
+    const modifierG = 0.975;
+    const modifierB = 0.950;
+    for (let x = 0; x < width; x++) {
+      for (let y = 0; y < height; y++) {
+        const xx = (width / 2) - x;
+        const yy = (height / 2) - y;
+        const index = (x + y * width) * 4;
+        const angle = Math.atan2(xx, yy);
+        const distance = Math.sqrt(xx ** 2 + yy ** 2);
+        const bufferRx = Math.round(width / 2 + Math.sin(angle) * distance * modifierR);
+        const bufferRy = Math.round(height / 2 + Math.cos(angle) * distance * modifierR);
+        const bufferRindex = (bufferRx + bufferRy * width) * 4;
+        const bufferGx = Math.round(width / 2 + Math.sin(angle) * distance * modifierG);
+        const bufferGy = Math.round(height / 2 + Math.cos(angle) * distance * modifierG);
+        const bufferGindex = (bufferGx + bufferGy * width) * 4;
+        const bufferBx = Math.round(width / 2 + Math.sin(angle) * distance * modifierB);
+        const bufferBy = Math.round(height / 2 + Math.cos(angle) * distance * modifierB);
+        const bufferBindex = (bufferBx + bufferBy * width) * 4;
+        imageData.data[index + 0] = bufferImageData.data[bufferRindex + 0];
+        imageData.data[index + 1] = bufferImageData.data[bufferGindex + 1];
+        imageData.data[index + 2] = bufferImageData.data[bufferBindex + 2];
+        imageData.data[index + 3] = 0xff;
+      }
+    }
+    ctx.putImageData(imageData, 0, 0);
+  }
+
+  drawBuffer (frame: Frame) {
+    const ctx = this.bufferCtx;
+    const { width, height, NUM_RINGS, MIN_RADIUS, MAX_RADIUS, RADIUS_DELTA } = this;
     const { progress } = frame;
     this.clear();
     ctx.fillStyle = '#000';
