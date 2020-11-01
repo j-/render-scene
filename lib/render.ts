@@ -70,7 +70,9 @@ try {
   try {
     console.debug('Creating canvas');
     canvas = createCanvas(WIDTH, HEIGHT);
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', {
+      alpha: false,
+    });
     const utils: Utils = {
       createCanvas: (createCanvas as unknown) as Utils['createCanvas'],
       loadImage: (loadImage as unknown) as Utils['loadImage'],
