@@ -41,17 +41,23 @@ const App: React.FC = () => {
 
     const scene: Scene = new MainScene(canvas, ctx, CANVAS_WIDTH, CANVAS_HEIGHT, utils);
 
-    const loop = (time: number) => {
-      const frame = buildFrame({
-        timeElapsedMs: time % TOTAL_TIME_MS,
-      }, info);
-      scene.draw(frame, info);
-      clock = requestAnimationFrame(loop);
+    let clock = -1;
 
-      const progress = progressRef.current;
-      if (progress) progress.value = frame.progress;
-    };
-    let clock = requestAnimationFrame(loop);
+    Promise.resolve(scene.setup()).then(() => {
+
+      const loop = (time: number) => {
+        const frame = buildFrame({
+          timeElapsedMs: time % TOTAL_TIME_MS,
+        }, info);
+        scene.draw(frame, info);
+        clock = requestAnimationFrame(loop);
+
+        const progress = progressRef.current;
+        if (progress) progress.value = frame.progress;
+      };
+
+      clock = requestAnimationFrame(loop);
+    });
 
     return () => cancelAnimationFrame(clock);
   }, [MainScene]);

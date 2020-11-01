@@ -26,6 +26,11 @@ export abstract class Scene {
     protected readonly utils: Utils,
   ) {}
   /**
+   * Perform all the required initialization for this scene. Will not render
+   * until setup is finished.
+   */
+  setup (): void | Promise<void> {}
+  /**
    * Draw a single frame of this scene. Is given information on the current
    * frame and its position in time, as well as information on the entire
    * scene.

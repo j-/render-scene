@@ -77,6 +77,8 @@ try {
     };
     console.debug('Constructing scene');
     scene = new SceneConstructor((canvas as unknown) as HTMLCanvasElement, ctx, WIDTH, HEIGHT, utils);
+    console.debug('Setting up scene');
+    await scene.setup();
   } catch (err) {
     console.error(`Error constructing scene: ${err.message}`);
     process.exit(1);
