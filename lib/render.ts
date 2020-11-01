@@ -1,6 +1,7 @@
-import { createWriteStream } from 'fs';
+import { existsSync, createWriteStream } from 'fs';
 import mkdirp from 'mkdirp';
 import path from 'path';
+import logUpdate from 'log-update';
 import { createCanvas, loadImage, Canvas } from 'canvas';
 import { Scene, SceneConstructor } from '../src/scene';
 import { Utils } from '../src/utils';
@@ -24,6 +25,26 @@ const info = buildInfo({
   framesPerSecond: FRAMES_PER_SECOND,
 });
 
+const scenePathOptions = [
+  scenePath + '.ts',
+  path.join(scenePath, '/index.ts'),
+];
+
+const scenePathFull = scenePathOptions.find((scenePathFull) => {
+  logUpdate(`Checking if module exists: "${scenePathFull}"`);
+  const exists = existsSync(scenePathFull);
+  if (exists) {
+    logUpdate(`Checking if module exists: "${scenePathFull}" - Exists`);
+  }
+  logUpdate.done();
+  return exists;
+});
+
+if (!scenePathFull) {
+  console.error('Cannot find scene. Check that it exists and try again.');
+  process.exit(1);
+}
+
 try {
   mkdirp.sync(outDir);
   console.error(`Writing to "${outDir}"`);
@@ -36,26 +57,25 @@ try {
   let SceneConstructor: SceneConstructor;
 
   try {
-    SceneConstructor = (await import(scenePath + '.ts')).default;
+    console.debug('Importing scene');
+    SceneConstructor = (await import(scenePathFull)).default;
   } catch (err) {
-    try {
-      SceneConstructor = (await import(scenePath + '/index.ts')).default;
-    } catch (err) {
-      console.error(`Error importing scene: ${err.message}`);
-      process.exit(1);
-    }
+    console.error(`Error importing scene: ${err.message}`);
+    process.exit(1);
   }
 
   let canvas: Canvas;
   let scene: Scene;
 
   try {
+    console.debug('Creating canvas');
     canvas = createCanvas(WIDTH, HEIGHT);
     const ctx = canvas.getContext('2d');
     const utils: Utils = {
       createCanvas: (createCanvas as unknown) as Utils['createCanvas'],
       loadImage: (loadImage as unknown) as Utils['loadImage'],
     };
+    console.debug('Constructing scene');
     scene = new SceneConstructor((canvas as unknown) as HTMLCanvasElement, ctx, WIDTH, HEIGHT, utils);
   } catch (err) {
     console.error(`Error constructing scene: ${err.message}`);
@@ -71,7 +91,7 @@ try {
     if (i % info.framesPerSecond === 0) {
       const seconds = i / info.framesPerSecond;
       const progress = Math.round(i / info.totalFrames * 100);
-      console.log(`Rendering frame ${i} (${seconds}s, ${progress}%)`);
+      logUpdate(`Rendering frame ${i} (${seconds}s, ${progress}%)`);
     }
     const frame = buildFrame({
       framesElapsed: i,
@@ -92,5 +112,7 @@ try {
       process.exit(1);
     }
   }
+
+  logUpdate('Done');
 
 })();
