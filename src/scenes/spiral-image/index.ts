@@ -108,6 +108,7 @@ export default class extends Scene {
       START_THETA,
       p * END_THETA,
       STEP_THETA,
+      this.width / 2
     );
   }
 
@@ -118,6 +119,7 @@ export default class extends Scene {
     startTheta: number,
     endTheta: number,
     thetaStep: number,
+    endRadius: number,
   ) {
     const { ctx } = this;
 
@@ -163,10 +165,10 @@ export default class extends Scene {
 
       oldSlope = newSlope;
       newSlope = (b * Math.sin(newTheta) + aPlusBTheta * Math.cos(newTheta)) /
-                  (b * Math.cos(newTheta) - aPlusBTheta * Math.sin(newTheta));
+                 (b * Math.cos(newTheta) - aPlusBTheta * Math.sin(newTheta));
 
       const oldIntercept = -(oldSlope * oldR * Math.cos(oldTheta) - oldR * Math.sin(oldTheta));
-      const newIntercept = -(newSlope * newR* Math.cos(newTheta) - newR * Math.sin(newTheta));
+      const newIntercept = -(newSlope * newR * Math.cos(newTheta) - newR * Math.sin(newTheta));
 
       const controlPoint = lineIntersection(oldSlope, oldIntercept, newSlope, newIntercept);
 
@@ -177,6 +179,13 @@ export default class extends Scene {
       ctx.beginPath();
       ctx.moveTo(oldPoint.x, oldPoint.y);
       ctx.bezierCurveTo(oldPoint.x, oldPoint.y, controlPoint.x, controlPoint.y, newPoint.x, newPoint.y);
+      /** Distance from 0 to 1 */
+      const distance = newR / endRadius;
+      /** Hue in degress */
+      const hue = newTheta * 180 / Math.PI + 180;
+      /** Lightness from 0 to 1 */
+      const lightness = lerp(1, 0.8, distance);
+      ctx.strokeStyle = `hsl(${hue}, 100%, ${lightness * 100}%)`;
       ctx.lineWidth = lerp(
         this.MIN_LINE_WIDTH,
         this.MAX_LINE_WIDTH,
