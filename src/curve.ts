@@ -13,6 +13,8 @@ export const compose = (...fns: Curve[]): Curve => (t: number) => fns.reduceRigh
 
 export const easeInOut: Curve = (t) => t * t * (3 - 2 * t);
 
+export const easeInSin: Curve = (t) => 1 - Math.cos((t * PI) / 2);
+
 export const clip: Curve = (t) => Math.min(Math.max(0, t), 1);
 
 export const range = (min: number, max: number): Curve => (t) => {
