@@ -56,9 +56,10 @@ export default class extends Scene {
           phase(val),
           loop(i),
         )(frame.progress);
-        ctx.translate((x + 0.5) * SQUARE_SIZE, (y + 0.5) * SQUARE_SIZE);
+        ctx.translate(x * SQUARE_SIZE, y * SQUARE_SIZE);
         ctx.moveTo(0, 0);
-        ctx.arc(0, 0, p * SQUARE_SIZE / 1.8, 0, Math.PI * 2);
+        ctx.fillStyle = `hsl(0, 0%, ${(1 - p) * 100}%)`;
+        ctx.fillRect(0, 0, SQUARE_SIZE, SQUARE_SIZE);
         ctx.restore();
       }
     }
