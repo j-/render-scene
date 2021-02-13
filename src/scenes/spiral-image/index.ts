@@ -41,10 +41,10 @@ const getPath = (
   let newR = a + b * newTheta;
 
   // start and end points
-  const oldPoint: Point2D = {x: 0, y: 0};
+  const oldPoint: Point2D = { x: 0, y: 0 };
   const newPoint: Point2D = {
-      x: center.x + newR * Math.cos(newTheta),
-      y: center.y + newR * Math.sin(newTheta)
+    x: center.x + newR * Math.cos(newTheta),
+    y: center.y + newR * Math.sin(newTheta)
   };
 
   // slopes of tangents
@@ -55,35 +55,35 @@ const getPath = (
   let path = 'M ' + pStr(newPoint);
 
   while (oldTheta < endTheta - thetaStep) {
-      oldTheta = newTheta;
-      newTheta += thetaStep;
+    oldTheta = newTheta;
+    newTheta += thetaStep;
 
-      oldR = newR;
-      newR = a + b * newTheta;
+    oldR = newR;
+    newR = a + b * newTheta;
 
-      oldPoint.x = newPoint.x;
-      oldPoint.y = newPoint.y;
-      newPoint.x = center.x + newR * Math.cos(newTheta);
-      newPoint.y = center.y + newR * Math.sin(newTheta);
+    oldPoint.x = newPoint.x;
+    oldPoint.y = newPoint.y;
+    newPoint.x = center.x + newR * Math.cos(newTheta);
+    newPoint.y = center.y + newR * Math.sin(newTheta);
 
-      // Slope calculation with the formula:
-      // (b * sinΘ + (a + bΘ) * cosΘ) / (b * cosΘ - (a + bΘ) * sinΘ)
-      const aPlusBTheta = a + b * newTheta;
+    // Slope calculation with the formula:
+    // (b * sinΘ + (a + bΘ) * cosΘ) / (b * cosΘ - (a + bΘ) * sinΘ)
+    const aPlusBTheta = a + b * newTheta;
 
-      oldSlope = newSlope;
-      newSlope = (b * Math.sin(newTheta) + aPlusBTheta * Math.cos(newTheta)) /
-                 (b * Math.cos(newTheta) - aPlusBTheta * Math.sin(newTheta));
+    oldSlope = newSlope;
+    newSlope = (b * Math.sin(newTheta) + aPlusBTheta * Math.cos(newTheta)) /
+               (b * Math.cos(newTheta) - aPlusBTheta * Math.sin(newTheta));
 
-      const oldIntercept = -(oldSlope * oldR * Math.cos(oldTheta) - oldR * Math.sin(oldTheta));
-      const newIntercept = -(newSlope * newR* Math.cos(newTheta) - newR * Math.sin(newTheta));
+    const oldIntercept = -(oldSlope * oldR * Math.cos(oldTheta) - oldR * Math.sin(oldTheta));
+    const newIntercept = -(newSlope * newR* Math.cos(newTheta) - newR * Math.sin(newTheta));
 
-      const controlPoint = lineIntersection(oldSlope, oldIntercept, newSlope, newIntercept);
+    const controlPoint = lineIntersection(oldSlope, oldIntercept, newSlope, newIntercept);
 
-      // Offset the control point by the center offset.
-      controlPoint.x += center.x;
-      controlPoint.y += center.y;
+    // Offset the control point by the center offset.
+    controlPoint.x += center.x;
+    controlPoint.y += center.y;
 
-      path += 'Q ' + pStr(controlPoint) + pStr(newPoint);
+    path += 'Q ' + pStr(controlPoint) + pStr(newPoint);
   }
 
   return path;
