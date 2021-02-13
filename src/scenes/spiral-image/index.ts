@@ -34,7 +34,6 @@ export default class extends Scene {
     const { ctx, width, height, ORIGIN, START_RADIUS, SPACE_PER_LOOP, START_THETA, END_THETA, STEP_THETA } = this;
     ctx.fillStyle = '#fff';
     ctx.fillRect(0, 0, width, height);
-    ctx.beginPath();
     const p = compose(easeInSin)(frame.progress);
     this.drawPath(
       ORIGIN,
@@ -80,8 +79,6 @@ export default class extends Scene {
     let newSlope = (b * Math.sin(oldTheta) + (a + b * newTheta) * Math.cos(oldTheta)) /
                    (b * Math.cos(oldTheta) - (a + b * newTheta) * Math.sin(oldTheta));
 
-    ctx.moveTo(newPoint.x, newPoint.y);
-
     while (oldTheta < endTheta - thetaStep) {
       oldTheta = newTheta;
       newTheta += thetaStep;
@@ -111,9 +108,10 @@ export default class extends Scene {
       controlPoint.x += center.x;
       controlPoint.y += center.y;
 
+      ctx.beginPath();
+      ctx.moveTo(oldPoint.x, oldPoint.y);
       ctx.bezierCurveTo(oldPoint.x, oldPoint.y, controlPoint.x, controlPoint.y, newPoint.x, newPoint.y);
+      ctx.stroke();
     }
-
-    ctx.stroke();
   }
 }
