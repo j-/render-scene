@@ -2,6 +2,9 @@ import { Scene } from '../../scene';
 import { Frame } from '../../frame';
 import { compose, easeInSin } from '../../curve';
 
+const { PI } = Math;
+const TAU = PI * 2;
+
 interface Point2D {
   x: number;
   y: number;
@@ -30,7 +33,7 @@ const getPath = (
 ): string => {
   // Rename spiral parameters for the formula r = a + bθ
   const a = startRadius;  // start distance from center
-  const b = spacePerLoop / Math.PI / 2; // space between each loop
+  const b = spacePerLoop / PI / 2; // space between each loop
 
   // convert angles to radians
   let newTheta = startTheta;
@@ -90,22 +93,28 @@ const getPath = (
 }
 
 export default class extends Scene {
-  private readonly LAYERS = 60;
+  private readonly ORIGIN: Point2D = { x: this.width / 2, y: this.height / 2 };
+  private readonly LOOPS = 60;
+  private readonly START_RADIUS = 0;
+  private readonly SPACE_PER_LOOP = this.width / (2 * this.LOOPS);
+  private readonly START_THETA = 0;
+  private readonly END_THETA = this.LOOPS * TAU * Math.SQRT2;
+  private readonly STEP_THETA  = Math.PI / 6;
 
   draw (frame: Frame) {
-    const { ctx, width, height, LAYERS } = this;
+    const { ctx, width, height, ORIGIN, START_RADIUS, SPACE_PER_LOOP, START_THETA, END_THETA, STEP_THETA } = this;
     ctx.fillStyle = '#fff';
     ctx.fillRect(0, 0, width, height);
     ctx.beginPath();
     const p = compose(easeInSin)(frame.progress);
     const path = new Path2D(
       getPath(
-        { x: width / 2, y: height / 2 },
-        0,
-        width / (2 * LAYERS),
-        0,
-        p * LAYERS * Math.PI * 2 * Math.SQRT2,
-        Math.PI / 6
+        ORIGIN,
+        START_RADIUS,
+        SPACE_PER_LOOP,
+        START_THETA,
+        p * END_THETA,
+        STEP_THETA,
       ),
     );
     ctx.stroke(path);
