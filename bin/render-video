@@ -3,6 +3,7 @@
 SCENE_NAME="$(node -e "console.log(require('./src/config.json').name)")"
 
 ffmpeg \
+  -y \
   -i "./out/$SCENE_NAME/frame-%05d.png" \
   -c:v libx264 \
   -pix_fmt yuv420p \
