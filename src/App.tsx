@@ -22,12 +22,14 @@ const App: React.FC = () => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const progressRef = React.useRef<HTMLProgressElement>(null);
   const [MainScene, setMainScene] = React.useState<SceneConstructor | null>(null);
+  const [importError, setImportError] = React.useState<Error | null>(null);
 
   React.useEffect(() => {
     import(`./scenes/${SCENE_NAME}`)
       .then((module: { default: SceneConstructor }) => {
         setMainScene(() => module.default);
-      });
+      })
+      .catch(setImportError);
   }, []);
 
   React.useEffect(() => {
@@ -68,6 +70,7 @@ const App: React.FC = () => {
     <div className="App">
       <h1>Scene</h1>
       <p><a href={`${SCENE_NAME}.mp4`}>Latest render</a></p>
+      {importError && <p style={{ color: 'red' }}>{importError.message}</p>}
       <p>
         <progress
           ref={progressRef}
