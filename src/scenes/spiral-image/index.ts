@@ -44,7 +44,7 @@ const getPath = (
   let newR = a + b * newTheta;
 
   // start and end points
-  const oldPoint: Point2D = { x: 0, y: 0 };
+  const oldPoint: Point2D = { x: NaN, y: NaN };
   const newPoint: Point2D = {
     x: center.x + newR * Math.cos(newTheta),
     y: center.y + newR * Math.sin(newTheta)
