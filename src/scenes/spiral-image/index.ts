@@ -33,10 +33,8 @@ const getPath = (
   const b = spacePerLoop / Math.PI / 2; // space between each loop
 
   // convert angles to radians
-  let newTheta = startTheta * Math.PI / 180;
+  let newTheta = startTheta;
   let oldTheta = newTheta;
-  endTheta = endTheta * Math.PI / 180;
-  thetaStep = thetaStep * Math.PI / 180;
 
   // radii
   let oldR: number;
@@ -106,8 +104,8 @@ export default class extends Scene {
         0,
         width / (2 * LAYERS),
         0,
-        p * LAYERS * 360 * Math.SQRT2,
-        30
+        p * LAYERS * Math.PI * 2 * Math.SQRT2,
+        Math.PI / 6
       ),
     );
     ctx.stroke(path);
