@@ -1,9 +1,44 @@
+import type { ImageData } from 'canvas';
 import { Scene } from '../scene';
 import { getContext } from '../context';
 import { Frame } from '../frame';
 
 const PI = Math.PI;
 const TAU = 2 * PI;
+
+export interface Spirograph {
+  (t: number): { x: number, y: number };
+}
+
+/**
+ * Generate a spirograph function.
+ * @param {number} r Radius of the spirograph
+ * @param {number} k (0 - 1) Ratio of inner circle to outer circle.
+ * @param {number} l (0 - 1) Hole distance from center of inner circle.
+ */
+export const createSpirograph = (r: number, k: number, l: number): Spirograph => (t: number) => ({
+  x: r * ((1 - k) * Math.cos(t) + l * k * Math.cos((1 - k) / k * t)),
+  y: r * ((1 - k) * Math.sin(t) + l * k * Math.sin((1 - k) / k * t)),
+});
+
+export const findLength = (spirograph: Spirograph, resolution = 0.0001, tolerance = 0.01, limit = 1_000_000) => {
+  const initial = spirograph(0);
+  let started = false;
+  for (let i = 0; i < limit; i++) {
+    const t = i * resolution;
+    const current = spirograph(t);
+    const deltaX = current.x - initial.x;
+    const deltaY = current.y - initial.y;
+    if (Math.abs(deltaX) < tolerance && Math.abs(deltaY) < tolerance) {
+      if (started) {
+        return t;
+      }
+    } else {
+      started = true;
+    }
+  }
+  return NaN;
+};
 
 export default class extends Scene {
   protected readonly SCALE = this.width / 20;
@@ -128,37 +163,3 @@ export default class extends Scene {
     ctx.restore();
   }
 }
-
-export interface Spirograph {
-  (t: number): { x: number, y: number };
-}
-
-/**
- * Generate a spirograph function.
- * @param {number} r Radius of the spirograph
- * @param {number} k (0 - 1) Ratio of inner circle to outer circle.
- * @param {number} l (0 - 1) Hole distance from center of inner circle.
- */
-export const createSpirograph = (r: number, k: number, l: number): Spirograph => (t: number) => ({
-  x: r * ((1 - k) * Math.cos(t) + l * k * Math.cos((1 - k) / k * t)),
-  y: r * ((1 - k) * Math.sin(t) + l * k * Math.sin((1 - k) / k * t)),
-});
-
-export const findLength = (spirograph: Spirograph, resolution = 0.0001, tolerance = 0.01, limit = 1_000_000) => {
-  const initial = spirograph(0);
-  let started = false;
-  for (let i = 0; i < limit; i++) {
-    const t = i * resolution;
-    const current = spirograph(t);
-    const deltaX = current.x - initial.x;
-    const deltaY = current.y - initial.y;
-    if (Math.abs(deltaX) < tolerance && Math.abs(deltaY) < tolerance) {
-      if (started) {
-        return t;
-      }
-    } else {
-      started = true;
-    }
-  }
-  return NaN;
-};
