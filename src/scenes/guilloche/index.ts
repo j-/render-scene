@@ -46,31 +46,34 @@ export default class extends Scene {
 
   draw (frame: Frame) {
     this.clear();
-    const { ctx, width, height, MIN_LINE_WIDTH, MAX_LINE_WIDTH, LINE_COUNT, LINE_GAP, LINE_STEPS } = this;
-    const { progress } = frame;
+    const { ctx, width, height, LINE_COUNT, LINE_GAP } = this;
     ctx.fillStyle = '#000';
     ctx.fillRect(-width / 2, -height / 2, width, height);
     ctx.strokeStyle = '#fff';
     for (let i = 0; i < LINE_COUNT; i++) {
       const y = LINE_COUNT / -2 * LINE_GAP + i * LINE_GAP;
-      for (let j = 0; j < LINE_STEPS; j++) {
-        const x0 = width / -2 + j / LINE_STEPS * width;
-        const y0 = y;
-        const x1 = width / -2 + (j + 1) / LINE_STEPS * width;
-        const y1 = y;
-        const lineValue = this.getLineValue(
-          x0 + width / 2,
-          y0 + height / 2,
-          x1 + width / 2,
-          y1 + height / 2,
-        );
-        const value = lerp(0, lineValue, progress);
-        ctx.lineWidth = lerp(MIN_LINE_WIDTH, MAX_LINE_WIDTH, value);
-        ctx.beginPath();
-        ctx.moveTo(x0, y0);
-        ctx.lineTo(x1, y1);
-        ctx.stroke();
-      }
+      this.drawLine(width / -2, y, width / 2, y, frame);
+    }
+  }
+
+  drawLine (x0: number, y0: number, x1: number, y1: number, frame: Frame) {
+    const { ctx, width, height, MIN_LINE_WIDTH, MAX_LINE_WIDTH, LINE_STEPS } = this;
+    for (let j = 0; j < LINE_STEPS; j++) {
+      const xx0 = x0 + j / LINE_STEPS * (x1 - x0);
+      const yy0 = y0 + j / LINE_STEPS * (y1 - y0);
+      const xx1 = x0 + (j + 1) / LINE_STEPS * (x1 - x0);
+      const yy1 = y1 + (j + 1) / LINE_STEPS * (y1 - y0);
+      const lineValue = this.getLineValue(
+        xx0 + width / 2,
+        yy0 + height / 2,
+        xx1 + width / 2,
+        yy1 + height / 2,
+      );
+      ctx.lineWidth = lerp(MIN_LINE_WIDTH, MAX_LINE_WIDTH, lerp(0, lineValue, frame.progress));
+      ctx.beginPath();
+      ctx.moveTo(xx0, yy0);
+      ctx.lineTo(xx1, yy1);
+      ctx.stroke();
     }
   }
 
