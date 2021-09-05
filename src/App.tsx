@@ -43,6 +43,10 @@ const App: React.FC = () => {
     });
     if (!ctx) return;
 
+    // Destroy and reinitialize canvas
+    // eslint-disable-next-line no-self-assign
+    canvas.width = canvas.width;
+
     const scene: Scene = new MainScene(canvas, ctx, CANVAS_WIDTH, CANVAS_HEIGHT, utils);
 
     let clock = -1;
