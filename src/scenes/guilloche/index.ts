@@ -9,8 +9,8 @@ const lerp = (min: number, max: number, value: number) => (
 
 export default class extends Scene {
   protected readonly MIN_LINE_WIDTH = this.height / 400;
-  protected readonly MAX_LINE_WIDTH = this.height / 40;
-  protected readonly LINE_GAP = this.height / 30;
+  protected readonly MAX_LINE_WIDTH = this.height / 50;
+  protected readonly LINE_GAP = this.height / 40;
   protected readonly LINE_COUNT = this.height / this.LINE_GAP + 1;
   protected readonly LINE_STEPS = 50;
 
@@ -21,6 +21,7 @@ export default class extends Scene {
   async setup () {
     const { ctx, srcCtx, values, width, height } = this;
     ctx.translate(width / 2, height / 2);
+    ctx.scale(1.1, 1.1);
     const image = await this.utils.loadImage(source);
     const IMAGE_WIDTH = image.width;
     const IMAGE_HEIGHT = image.height;
@@ -49,31 +50,47 @@ export default class extends Scene {
     const { ctx, width, height, LINE_COUNT, LINE_GAP } = this;
     ctx.fillStyle = '#000';
     ctx.fillRect(-width / 2, -height / 2, width, height);
-    ctx.strokeStyle = '#fff';
+    ctx.beginPath();
     for (let i = 0; i < LINE_COUNT; i++) {
       const y = LINE_COUNT / -2 * LINE_GAP + i * LINE_GAP;
-      this.drawLine(width / -2, y, width / 2, y, frame);
+      const p = frame.progress;
+      this.drawLine(width / -2, y, width / 2, y, p);
     }
+    ctx.closePath();
+    ctx.fillStyle = '#fff';
+    ctx.fill();
   }
 
-  drawLine (x0: number, y0: number, x1: number, y1: number, frame: Frame) {
+  drawLine (x0: number, y0: number, x1: number, y1: number, p: number) {
     const { ctx, width, height, MIN_LINE_WIDTH, MAX_LINE_WIDTH, LINE_STEPS } = this;
+    ctx.moveTo(x0, y0);
     for (let j = 0; j < LINE_STEPS; j++) {
       const xx0 = x0 + j / LINE_STEPS * (x1 - x0);
       const yy0 = y0 + j / LINE_STEPS * (y1 - y0);
       const xx1 = x0 + (j + 1) / LINE_STEPS * (x1 - x0);
       const yy1 = y1 + (j + 1) / LINE_STEPS * (y1 - y0);
-      const lineValue = this.getLineValue(
+      const value = this.getLineValue(
         xx0 + width / 2,
         yy0 + height / 2,
         xx1 + width / 2,
         yy1 + height / 2,
       );
-      ctx.lineWidth = lerp(MIN_LINE_WIDTH, MAX_LINE_WIDTH, lerp(0, lineValue, frame.progress));
-      ctx.beginPath();
-      ctx.moveTo(xx0, yy0);
-      ctx.lineTo(xx1, yy1);
-      ctx.stroke();
+      const delta = lerp(MIN_LINE_WIDTH, MAX_LINE_WIDTH, lerp(0, value, p)) / 2;
+      ctx.lineTo(xx1, yy1 - delta);
+    }
+    for (let j = LINE_STEPS - 1; j >= 0; j--) {
+      const xx0 = x0 + j / LINE_STEPS * (x1 - x0);
+      const yy0 = y0 + j / LINE_STEPS * (y1 - y0);
+      const xx1 = x0 + (j + 1) / LINE_STEPS * (x1 - x0);
+      const yy1 = y1 + (j + 1) / LINE_STEPS * (y1 - y0);
+      const value = this.getLineValue(
+        xx0 + width / 2,
+        yy0 + height / 2,
+        xx1 + width / 2,
+        yy1 + height / 2,
+      );
+      const delta = lerp(MIN_LINE_WIDTH, MAX_LINE_WIDTH, lerp(0, value, p)) / 2;
+      ctx.lineTo(xx0, yy0 + delta);
     }
   }
 
