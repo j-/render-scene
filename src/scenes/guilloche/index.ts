@@ -1,6 +1,7 @@
 import { Scene } from '../../scene';
 import { Frame } from '../../frame';
 import { getContext } from '../../context';
+import { compose, pulse, phase } from '../../curve';
 import source from './source';
 
 const lerp = (min: number, max: number, value: number) => (
@@ -9,8 +10,8 @@ const lerp = (min: number, max: number, value: number) => (
 
 export default class extends Scene {
   protected readonly MIN_LINE_WIDTH = this.height / 400;
-  protected readonly MAX_LINE_WIDTH = this.height / 50;
-  protected readonly LINE_GAP = this.height / 40;
+  protected readonly MAX_LINE_WIDTH = this.height / 75;
+  protected readonly LINE_GAP = this.height / 50;
   protected readonly LINE_COUNT = this.height / this.LINE_GAP + 1;
   protected readonly LINE_STEPS = 50;
 
@@ -53,7 +54,7 @@ export default class extends Scene {
     ctx.beginPath();
     for (let i = 0; i < LINE_COUNT; i++) {
       const y = LINE_COUNT / -2 * LINE_GAP + i * LINE_GAP;
-      const p = frame.progress;
+      const p = compose(pulse(1), phase(-i / LINE_COUNT / 10))(frame.progress);
       this.drawLine(width / -2, y, width / 2, y, p);
     }
     ctx.closePath();
