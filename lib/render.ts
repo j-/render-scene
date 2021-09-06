@@ -48,7 +48,7 @@ if (!scenePathFull) {
 try {
   mkdirp.sync(outDir);
   console.error(`Writing to "${outDir}"`);
-} catch (err) {
+} catch (err: any) {
   console.error(`Could not create output directory: ${err.message}`);
   process.exit(1);
 }
@@ -59,7 +59,7 @@ try {
   try {
     console.debug('Importing scene');
     SceneConstructor = (await import(scenePathFull)).default;
-  } catch (err) {
+  } catch (err: any) {
     console.error(`Error importing scene: ${err.message}`);
     process.exit(1);
   }
@@ -81,7 +81,7 @@ try {
     scene = new SceneConstructor((canvas as unknown) as HTMLCanvasElement, ctx, WIDTH, HEIGHT, utils);
     console.debug('Setting up scene');
     await scene.setup();
-  } catch (err) {
+  } catch (err: any) {
     console.error(`Error constructing scene: ${err.message}`);
     process.exit(1);
   }
@@ -111,7 +111,7 @@ try {
         out.on('close', resolve);
         out.on('error', reject);
       });
-    } catch (err) {
+    } catch (err: any) {
       console.error(`Error rendering frame ${i}: ${err.message}`);
       process.exit(1);
     }
