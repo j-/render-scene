@@ -55,3 +55,16 @@ Video can be rendered after frames.
 ```
 $ render-video
 ```
+
+Troubleshooting
+---------------
+
+### node-pre-gyp errors on install
+
+#### Mac OS
+
+Install dependencies for canvas package with brew:
+
+```
+$ brew install pkg-config cairo pango libpng jpeg giflib librsvg
+```
