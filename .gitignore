@@ -3,3 +3,4 @@ node_modules/
 out/
 /public/*.mp4
 /src/config.json
+.DS_Store

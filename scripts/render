@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+./scripts/render-frames && ./scripts/render-video

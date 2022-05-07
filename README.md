@@ -27,13 +27,9 @@ Save this config file as `src/config.json`.
 
 ```
 
-### Add bin directory to PATH
+### Add ffmpeg to PATH
 
-`bin/` must be in PATH
-
-```
-export PATH="./bin:$PATH"
-```
+[Download ffmpeg](https://ffmpeg.org/) and add it to PATH.
 
 Rendering
 ---------
@@ -45,7 +41,7 @@ Rendering configuration is defined in `src/config.json`.
 Individual frames must be rendered first.
 
 ```
-$ render-frames
+$ ./scripts/render-frames
 ```
 
 ### Render video
@@ -53,7 +49,15 @@ $ render-frames
 Video can be rendered after frames.
 
 ```
-$ render-video
+$ ./scripts/render-video
+```
+
+### Render both
+
+For convenience.
+
+```
+$ ./scripts/render
 ```
 
 Troubleshooting
