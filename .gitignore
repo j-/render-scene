@@ -1,6 +1,7 @@
 build/
 node_modules/
 out/
+/public/*.mp3
 /public/*.mp4
 /src/config.json
 .DS_Store

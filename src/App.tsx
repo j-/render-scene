@@ -29,7 +29,10 @@ const App: React.FC = () => {
       .then((module: { default: SceneConstructor }) => {
         setMainScene(() => module.default);
       })
-      .catch(setImportError);
+      .catch((err) => {
+        console.log(err);
+        setImportError(err);
+      });
   }, []);
 
   React.useEffect(() => {

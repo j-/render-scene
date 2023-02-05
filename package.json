@@ -5,13 +5,16 @@
   "keywords": [],
   "main": "src/index.tsx",
   "dependencies": {
+    "canvas-5-polyfill": "^0.1.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.5",
     "redux": "^4.1.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
-    "seedrandom": "^3.0.5"
+    "seedrandom": "^3.0.5",
+    "web-audio-api": "^0.2.2",
+    "web-audio-beat-detector": "^8.1.38"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^5.3.19",

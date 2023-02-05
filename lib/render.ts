@@ -1,4 +1,4 @@
-import { existsSync, createWriteStream } from 'fs';
+import { existsSync, createWriteStream, promises } from 'fs';
 import mkdirp from 'mkdirp';
 import path from 'path';
 import logUpdate from 'log-update';
@@ -76,6 +76,7 @@ try {
     const utils: Utils = {
       createCanvas: (createCanvas as unknown) as Utils['createCanvas'],
       loadImage: (loadImage as unknown) as Utils['loadImage'],
+      loadFile: (src: string) => promises.readFile(path.resolve(__dirname, '../public', src)),
     };
     console.debug('Constructing scene');
     scene = new SceneConstructor((canvas as unknown) as HTMLCanvasElement, ctx, WIDTH, HEIGHT, utils);
